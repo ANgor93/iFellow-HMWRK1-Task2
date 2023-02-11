@@ -2,8 +2,10 @@ package jiratask.test;
 
 
 import com.codeborne.selenide.SelenideElement;
+import jiratask.PageSteps.*;
+import jiratask.elements.DashboardElement;
+import jiratask.elements.TaskElement;
 import jiratask.hooks.Hooks;
-import jiratask.page.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +18,7 @@ public class RunTest extends Hooks {
         //Авторизоваться в edujira.ifellow.ru
     void shouldBeValidAuthorization() {
         new LoginPage().login();
-        assertTrue(new DashboardPage().profileUser.isDisplayed());
+        assertTrue(new DashboardElement().profileUser.isDisplayed());
     }
 
     @Test
@@ -25,7 +27,7 @@ public class RunTest extends Hooks {
         new LoginPage().login();
         new DashboardPage().selectProjectTest();
         new DashboardPage().dashboardPageProject();
-        assertTrue(new DashboardPage().projectTest.isDisplayed());
+        assertTrue(new DashboardElement().projectTest.isDisplayed());
     }
 
     @Test
@@ -35,7 +37,7 @@ public class RunTest extends Hooks {
         new DashboardPage().selectProjectTest();
         new ProjectPage().openTasksList();
         new ProjectPage().numbersOfTaskPageProject();
-        assertTrue(new ProjectPage().numberOfTasks.isDisplayed());
+        assertEquals(ProjectPage.getNumberOfTasks(), 8478);
     }
 
     @Test
@@ -45,8 +47,8 @@ public class RunTest extends Hooks {
         new DashboardPage().selectProjectTest();
         TaskPage taskPage = new TaskPage();
         taskPage.choiceTask();
-        assertEquals("В РАБОТЕ", taskPage.status.getText());
-        assertEquals("Version 2.0", taskPage.version.getText());
+        assertEquals("В РАБОТЕ", taskPage.getStatus());
+        assertEquals("Version 2.0", taskPage.getVersion());
     }
 
     @Test
