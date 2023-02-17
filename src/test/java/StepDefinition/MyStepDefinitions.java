@@ -5,7 +5,7 @@ import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
 import org.junit.Assert;
 
-import java.util.Scanner;
+
 
 public class MyStepDefinitions {
 
@@ -27,6 +27,7 @@ public class MyStepDefinitions {
     @Тогда("я получаю сумму {int}")
     public void theResultShouldBe(int expectedSum) {
         Assert.assertEquals(expectedSum, result);
+        System.out.println("Выполнено: сумма " + number1 + " и " + number2 + " равна " + result);
     }
 
 }
