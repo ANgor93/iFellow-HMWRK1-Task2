@@ -1,4 +1,4 @@
-package StepDefinition;
+package test;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
