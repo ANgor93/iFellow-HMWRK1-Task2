@@ -24,7 +24,7 @@ public class RickAndMortyAPI {
             .setBaseUri("https://rickandmortyapi.com/api")
             .build();
 
-    @Дано("я запрашиваю информацию о персонаже с ID {string}")
+    @Дано("информация о персонаже с ID {string}")
     public static void getCharacterInfo(String id) {
         Response gettingCharacter = given()
                 .spec(REQUEST_SPECIFICATION)
@@ -39,7 +39,7 @@ public class RickAndMortyAPI {
         mortySpecies = new JSONObject(gettingCharacter.getBody().asString()).get("species").toString();
     }
 
-    @Затем("я получаю номер последнего эпизода, в котором появился персонаж")
+    @Затем("получить номер последнего эпизода, в котором появился персонаж")
     public static void getLastEpisodeNumber() {
         Response getLastEpisode = given()
                 .spec(REQUEST_SPECIFICATION)
@@ -53,7 +53,7 @@ public class RickAndMortyAPI {
         lastEpisode = Integer.parseInt(new JSONObject(getLastEpisode.getBody().asString()).getJSONArray("episode").get(episode).toString().replaceAll("[^0-9]", ""));
     }
 
-    @Затем("я получаю идентификатор последнего персонажа из последнего эпизода")
+    @Затем("получить идентификатор последнего персонажа из последнего эпизода")
     public static void getLastCharacterId() {
         Response gettingLastChar = given()
                 .spec(REQUEST_SPECIFICATION)
@@ -67,7 +67,7 @@ public class RickAndMortyAPI {
         lastCharacter = Integer.parseInt(new JSONObject(gettingLastChar.getBody().asString()).getJSONArray("characters").get(lastCharIndex).toString().replaceAll("[^0-9]", ""));
     }
 
-    @Затем("я получаю информацию о последнем персонаже")
+    @Затем("получить информацию о последнем персонаже")
     public static void getLastCharacterInfo() {
         Response lastCharInfo = given()
                 .spec(REQUEST_SPECIFICATION)
@@ -81,7 +81,7 @@ public class RickAndMortyAPI {
         lastCharLoc = new JSONObject(lastCharInfo.getBody().asString()).getJSONObject("location").get("name").toString();
     }
 
-    @Тогда("местонахождение персонажа должно совпадать с местонахождением Морти")
+    @Тогда("проверить совпадение местонахождения")
     public static void locationAssert() {
         if (mortyLocation.equals(lastCharLoc)) {
             System.out.println("Местонахождение последнего персонажа и Морти совпадает");
@@ -91,7 +91,7 @@ public class RickAndMortyAPI {
         Assertions.assertEquals(mortyLocation, lastCharLoc);
     }
 
-    @Тогда("раса персонажа должна совпадать с расой Морти")
+    @Тогда("проверить совпадение расы")
     public static void raceAssert() {
         if (mortySpecies.equals(lastCharRace)) {
             System.out.println("Раса последнего персонажа и Морти совпадает");
