@@ -1,6 +1,5 @@
 package jiratask.PageSteps;
 
-import com.codeborne.selenide.Selenide;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
 
@@ -19,12 +18,14 @@ public class TaskPage {
         activeSprint.click();
         taskName.click();
     }
+
     @Step("Проверить статус задачи")
     @Тогда("статус задачи равен {string}")
     public void verifyTaskStatus(String expectedStatus) {
         assertEquals(expectedStatus, TaskElement.status.getText());
         System.out.println("Статус задачи В РАБОТЕ");
     }
+
     @Step("Проверить версию задачи")
     @Тогда("версия задачи равна {string}")
     public void verifyTaskVersion(String expectedVersion) {

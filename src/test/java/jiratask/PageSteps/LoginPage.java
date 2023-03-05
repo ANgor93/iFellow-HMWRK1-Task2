@@ -1,6 +1,5 @@
 package jiratask.PageSteps;
 
-import com.codeborne.selenide.Selenide;
 import io.cucumber.java.ru.Дано;
 import io.cucumber.java.ru.Тогда;
 
@@ -9,7 +8,7 @@ import java.time.Duration;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.open;
+
 import static jiratask.elements.DashboardElement.profileUser;
 import static jiratask.elements.LoginElements.*;
 
