@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class BugReportElement {
     public static SelenideElement succesMessage = $(By.xpath("//a[@class='issue-created-key issue-link']"));
-    public static SelenideElement bugLinkLocator = $(By.xpath("//a[contains(text(), 'Bug title')]"));
+    public static SelenideElement bugLinkLocator = $(By.xpath("//a[contains(text(), 'bug title')]"));
     public static SelenideElement statusLocator = $(By.xpath("//span[contains(@class, 'jira-issue-status') and text()='Готово']"));
     public static SelenideElement createBugButton = $(By.xpath("//a[@id='create_link']"));
     public static SelenideElement choiceBug = $(By.xpath("//div[@id='issuetype-single-select']//child::input"));
