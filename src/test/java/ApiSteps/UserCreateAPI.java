@@ -1,5 +1,9 @@
 package ApiSteps;
 
+import io.qameta.allure.restassured.AllureRestAssured;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import org.json.JSONObject;
 
@@ -7,11 +11,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-
 import io.cucumber.java.ru.*;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
 
 import static io.restassured.RestAssured.given;
-
 
 import org.junit.jupiter.api.Assertions;
 
@@ -21,6 +25,7 @@ public class UserCreateAPI {
     public static String responseName;
     public static String responseJob;
 
+    @Step("Устанавливаю тело запроса на создание пользователя")
     @Дано("У меня есть запрос на создание пользователя")
     public static void setRequestBody() throws IOException {
         JSONObject body = new JSONObject(new String(Files.readAllBytes(Paths.get("src/test/resources/json/requestBody.json"))));
@@ -29,9 +34,13 @@ public class UserCreateAPI {
         requestBody = body.toString();
     }
 
+    @Step("Отправляю POST запрос на endpoint {0}")
     @Когда("Я отправляю POST запрос на endpoint {string}")
     public static void sendPostRequest(String endpoint) {
         Response response = given()
+                .filter(new RequestLoggingFilter(LogDetail.ALL))
+                .filter(new ResponseLoggingFilter(LogDetail.ALL))
+                .filter(new AllureRestAssured())
                 .header("Content-type", "application/json")
                 .baseUri("https://reqres.in/api")
                 .body(requestBody)
@@ -44,9 +53,10 @@ public class UserCreateAPI {
 
         responseName = response.jsonPath().getString("name");
         responseJob = response.jsonPath().getString("job");
+        Allure.addAttachment("Response body", response.getBody().asString());
     }
 
-
+    @Step("Проверяю, что тело ответа содержит имя и работу созданного пользователя")
     @Тогда("Тело ответа должно содержать имя и работу созданного пользователя")
     public static void checkResponseBody() {
         if ("Tomato".equals(responseName) && "Eat market".equals(responseJob)) {

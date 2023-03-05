@@ -3,6 +3,8 @@ package ApiSteps;
 import io.cucumber.java.ru.Дано;
 import io.cucumber.java.ru.Затем;
 import io.cucumber.java.ru.Тогда;
+import io.qameta.allure.Step;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -25,9 +27,11 @@ public class RickAndMortyAPI {
             .build();
 
     @Дано("информация о персонаже с ID {string}")
+    @Step("Извлечение информации о персонаже с ID {0}")
     public static void getCharacterInfo(String id) {
         Response gettingCharacter = given()
                 .spec(REQUEST_SPECIFICATION)
+                .filter(new AllureRestAssured())
                 .when()
                 .get("/character/" + id)
                 .then()
@@ -40,9 +44,11 @@ public class RickAndMortyAPI {
     }
 
     @Затем("получить номер последнего эпизода, в котором появился персонаж")
+    @Step("Извлечение номера последнего эпизода")
     public static void getLastEpisodeNumber() {
         Response getLastEpisode = given()
                 .spec(REQUEST_SPECIFICATION)
+                .filter(new AllureRestAssured())
                 .when()
                 .get("/character/" + characterId)
                 .then()
@@ -54,9 +60,11 @@ public class RickAndMortyAPI {
     }
 
     @Затем("получить идентификатор последнего персонажа из последнего эпизода")
+    @Step("Извлечение идентификатора последнего персонажа")
     public static void getLastCharacterId() {
         Response gettingLastChar = given()
                 .spec(REQUEST_SPECIFICATION)
+                .filter(new AllureRestAssured())
                 .when()
                 .get("/episode/" + lastEpisode)
                 .then()
@@ -68,9 +76,11 @@ public class RickAndMortyAPI {
     }
 
     @Затем("получить информацию о последнем персонаже")
+    @Step("Получить информацию о последнем персонаже")
     public static void getLastCharacterInfo() {
         Response lastCharInfo = given()
                 .spec(REQUEST_SPECIFICATION)
+                .filter(new AllureRestAssured())
                 .when()
                 .get("/character/" + lastCharacter)
                 .then()
@@ -82,6 +92,7 @@ public class RickAndMortyAPI {
     }
 
     @Тогда("проверить совпадение местонахождения")
+    @Step("Проверить совпадение местонахождения")
     public static void locationAssert() {
         if (mortyLocation.equals(lastCharLoc)) {
             System.out.println("Местонахождение последнего персонажа и Морти совпадает");
@@ -92,6 +103,7 @@ public class RickAndMortyAPI {
     }
 
     @Тогда("проверить совпадение расы")
+    @Step("Проверить совпадение расы")
     public static void raceAssert() {
         if (mortySpecies.equals(lastCharRace)) {
             System.out.println("Раса последнего персонажа и Морти совпадает");
