@@ -2,6 +2,7 @@ package ApiSteps;
 
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
@@ -36,6 +37,9 @@ public class AuthJiraAPI {
                 .post("https://edujira.ifellow.ru/rest/auth/1/session");
 
         sessionId = response.getCookie("JSESSIONID");
+
+        Allure.addAttachment("Request Body", body.toString());
+        Allure.addAttachment("Response Body", response.getBody().asString());
     }
 
 
@@ -47,6 +51,9 @@ public class AuthJiraAPI {
         } else {
             System.out.println("Ошибка авторизации");
         }
+        Assertions.assertNotNull(sessionId);
+
+        Allure.addAttachment("Session ID", sessionId);
         Assertions.assertNotNull(sessionId);
     }
 }

@@ -54,6 +54,9 @@ public class UserCreateAPI {
         responseName = response.jsonPath().getString("name");
         responseJob = response.jsonPath().getString("job");
         Allure.addAttachment("Response body", response.getBody().asString());
+
+        Allure.addAttachment("Response name", responseName);
+        Allure.addAttachment("Response job", responseJob);
     }
 
     @Step("Проверяю, что тело ответа содержит имя и работу созданного пользователя")
@@ -66,5 +69,9 @@ public class UserCreateAPI {
         }
         Assertions.assertEquals("Tomato", responseName);
         Assertions.assertEquals("Eat market", responseJob);
+        String attachmentName = "Response Body Values";
+        String attachmentContent = String.format("Response name: %s, Response job: %s", responseName, responseJob);
+        Allure.addAttachment(attachmentName, attachmentContent);
     }
+
 }

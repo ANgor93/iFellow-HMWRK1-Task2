@@ -3,6 +3,8 @@ package ApiSteps;
 import io.cucumber.java.ru.Дано;
 import io.cucumber.java.ru.Затем;
 import io.cucumber.java.ru.Тогда;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -41,6 +43,10 @@ public class RickAndMortyAPI {
         characterId = new JSONObject(gettingCharacter.getBody().asString()).get("id").toString();
         mortyLocation = new JSONObject(gettingCharacter.getBody().asString()).getJSONObject("location").get("name").toString();
         mortySpecies = new JSONObject(gettingCharacter.getBody().asString()).get("species").toString();
+
+        Allure.addAttachment("ID персонажа", characterId);
+        Allure.addAttachment("Местонахождение Морти", mortyLocation);
+        Allure.addAttachment("Раса Морти", mortySpecies);
     }
 
     @Затем("получить номер последнего эпизода, в котором появился персонаж")
@@ -56,7 +62,10 @@ public class RickAndMortyAPI {
                 .response();
 
         int episode = (new JSONObject(getLastEpisode.getBody().asString()).getJSONArray("episode").length() - 1);
-        lastEpisode = Integer.parseInt(new JSONObject(getLastEpisode.getBody().asString()).getJSONArray("episode").get(episode).toString().replaceAll("[^0-9]", ""));
+        lastEpisode = Integer.parseInt(new JSONObject(getLastEpisode.getBody().asString())
+                .getJSONArray("episode").get(episode).toString().replaceAll("[^0-9]", ""));
+
+        Allure.addAttachment("Номер последнего эпизода", String.valueOf(lastEpisode));
     }
 
     @Затем("получить идентификатор последнего персонажа из последнего эпизода")
@@ -72,7 +81,10 @@ public class RickAndMortyAPI {
                 .response();
 
         int lastCharIndex = (new JSONObject(gettingLastChar.getBody().asString()).getJSONArray("characters").length() - 1);
-        lastCharacter = Integer.parseInt(new JSONObject(gettingLastChar.getBody().asString()).getJSONArray("characters").get(lastCharIndex).toString().replaceAll("[^0-9]", ""));
+        lastCharacter = Integer.parseInt(new JSONObject(gettingLastChar.getBody().asString())
+                .getJSONArray("characters").get(lastCharIndex).toString().replaceAll("[^0-9]", ""));
+
+        Allure.addAttachment("ID последнего персонажа", String.valueOf(lastCharacter));
     }
 
     @Затем("получить информацию о последнем персонаже")
@@ -89,6 +101,8 @@ public class RickAndMortyAPI {
 
         lastCharRace = new JSONObject(lastCharInfo.getBody().asString()).get("species").toString();
         lastCharLoc = new JSONObject(lastCharInfo.getBody().asString()).getJSONObject("location").get("name").toString();
+
+        Allure.addAttachment("Информация о последнем персонаже", lastCharInfo.getBody().asString());
     }
 
     @Тогда("проверить совпадение местонахождения")
@@ -99,6 +113,8 @@ public class RickAndMortyAPI {
         } else {
             System.out.println("Местонахождение последнего персонажа и Морти не совпадает");
         }
+        String message = String.format("Местонахождение последнего персонажа: %s; Местонахождение Морти: %s", lastCharLoc, mortyLocation);
+        saveAttachment("Проверка совпадения местонахождения", message);
         Assertions.assertEquals(mortyLocation, lastCharLoc);
     }
 
@@ -110,7 +126,15 @@ public class RickAndMortyAPI {
         } else {
             System.out.println("Раса последнего персонажа и Морти не совпадает");
         }
+        String message = String.format("Раса последнего персонажа: %s; Раса Морти: %s", lastCharRace, mortySpecies);
+        saveAttachment("Проверка совпадения расы", message);
         Assertions.assertEquals(mortySpecies, lastCharRace);
     }
+
+    @Attachment(value = "{name}", type = "text/plain")
+    public static String saveAttachment(String name, String message) {
+        return message;
+    }
+
 
 }
