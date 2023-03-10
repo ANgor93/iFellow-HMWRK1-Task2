@@ -1,6 +1,7 @@
 package jiratask.PageSteps;
 
 import io.cucumber.java.ru.Дано;
+import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
 
 import java.time.Duration;
@@ -22,15 +23,15 @@ public class LoginPage {
         return "Qwerty123";
     }
 
-    @Step("Выполнить логин на сайте")
-    @Дано("я выполняю логин на сайте")
-    public static void login() {
-        usernameField.setValue(getUsername());
-        passwordField.setValue(getPassword());
+
+    @Когда("я выполняю логин на сайте с логином {string} и паролем {string}")
+    public static void login(String username, String password) {
+        usernameField.setValue(username);
+        passwordField.setValue(password);
         loginButton.click();
     }
 
-    @Step("Проверить авторизацию")
+
     @Тогда("проверить авторизацию")
     public static void verifyLogin() {
         profileUser.shouldBe(visible, Duration.ofSeconds(10));

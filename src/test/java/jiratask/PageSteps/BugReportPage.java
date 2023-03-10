@@ -15,7 +15,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static jiratask.elements.BugReportElement.succesMessage;
 
 public class BugReportPage {
-    @Step("Изменить статус бага")
+
     @Когда("я изменяю статус бага")
     public void changeBugStatus() {
         $(BugReportElement.bugLinkLocator).click();
@@ -23,7 +23,7 @@ public class BugReportPage {
         $(BugReportElement.statusTrigger).click();
     }
 
-    @Step("Создать баг с заголовком {bugTitle} и описанием {bugDescription}")
+
     @Когда("я создаю баг с заголовком {string} и описанием {string}")
     public void createBug(String bugTitle, String bugDescription) {
         SelenideElement createBugButton = $(BugReportElement.createBugButton);
@@ -39,15 +39,12 @@ public class BugReportPage {
         submitBugButton.click();
     }
 
-    @Step("Проверить успешное создание бага с заголовком {title}")
     @Тогда("баг успешно создан с заголовком {string}")
     public void isBugReportSuccessful(String title) {
         assertTrue($(succesMessage).waitUntil(Condition.text(title), 10000).exists());
         System.out.println("Баг успешно создан");
     }
 
-
-    @Step("Статус бага равен {expectedStatus}")
     @Тогда("статус бага равен {string}")
     public void getStatus(String expectedStatus) {
         SelenideElement status = $(BugReportElement.statusLocator);

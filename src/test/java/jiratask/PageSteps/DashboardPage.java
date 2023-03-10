@@ -11,8 +11,8 @@ import static jiratask.elements.DashboardElement.*;
 
 
 public class DashboardPage {
-    @Step("Выбрать проект Test")
-    @Когда("я выбираю проект Test")
+
+    @Когда("я выбираю проект")
     public void selectProjectTest() {
         projectClick.click();
         projectViewAllLink.click();
@@ -22,7 +22,7 @@ public class DashboardPage {
     public DashboardPage() {
         profileUser.shouldBe(Condition.visible);
     }
-    @Step("Проверить, что пользователь находится на странице дашборда проекта")
+
     @Тогда("я нахожусь на странице дашборда проекта")
     public void dashboardPageProject() {
         projectTest.shouldBe(Condition.visible);

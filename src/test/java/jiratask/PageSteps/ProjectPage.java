@@ -13,7 +13,7 @@ import static jiratask.elements.ProjectElement.*;
 
 
 public class ProjectPage {
-    @Step("Открыть список задач")
+
     @Когда("я открываю список задач")
     public void openTasksList() {
         taskMenu.click();
@@ -21,14 +21,11 @@ public class ProjectPage {
         butnAllTask.click();
     }
 
-
-    @Step("Выбрать общее количество задач")
     @Когда("я выбираю общее количество задач")
     public void selectTotalNumberOfTasks() {
         numberOfTasks.shouldBe(Condition.visible);
     }
 
-    @Step("Проверить количество задач")
     @Тогда("количество задач равно {int}")
     public void verifyNumberOfTasksCucumber(int expectedNumberOfTasks) {
         int actualNumberOfTasks = Integer.parseInt(numberOfTasks.getText().split(" ")[2]);
